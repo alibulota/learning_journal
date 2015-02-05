@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-# import transaction
-from pyramid.events import NewRequest, subscriber
 from contextlib import closing
 import psycopg2
 import os
@@ -9,6 +7,7 @@ from pyramid.config import Configurator
 from pyramid.session import SignedCookieSessionFactory
 from pyramid.view import view_config
 from waitress import serve
+from pyramid.events import NewRequest, subscriber
 import datetime
 
 DB_SCHEMA = """
@@ -31,6 +30,7 @@ SELECT id, title, text, created FROM entries ORDER BY created DESC
 """
 
 
+@view_config(route_name='home', renderer='templates/list.jinja2')
 def read_entries(request):
     """return a list of all entries as dicts"""
     cursor = request.db.cursor()
@@ -41,11 +41,6 @@ def read_entries(request):
 
 logging.basicConfig()
 log = logging.getLogger(__file__)
-
-
-@view_config(route_name='home', renderer='string')
-def home(request):
-    return "Hello World"
 
 
 def connect_db(settings):
@@ -72,7 +67,7 @@ def open_connection(event):
     request = event.request
     settings = request.registry.settings
     request.db = connect_db(settings)
-    request.add_finished_calllback(close_connection)
+    request.add_finished_callback(close_connection)
 
 
 def close_connection(request):
