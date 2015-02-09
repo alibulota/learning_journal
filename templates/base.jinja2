@@ -11,7 +11,6 @@
   <body>
     <header>
     <aside id="user-controls">
-<<<<<<< HEAD
           <ul>
           {% if not request.authenticated_userid %}
             <li><a href="{{ request.route_url('login') }}">log in</a></li>
@@ -20,16 +19,6 @@
           {% endif %}
           </ul>
         </aside>
-=======
-      <ul>
-      {% if not request.authenticated_userid %}
-        <li><a href="{{ request.route_url('login') }}">log in</a></li>
-      {% else %}
-        <li><a href="{{ request.route_url('logout') }}">log out</a></li>
-      {% endif %}
-      </ul>
-    </aside>
->>>>>>> 16d597aae3c32d9e7acf6d16dd029419f8a83b18
       <nav>
         <ul>
           <li><a href="/">Home</a></li>
