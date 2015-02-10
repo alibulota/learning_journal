@@ -1,0 +1,24 @@
+body {
+    background-color: lightgreen;
+}
+h1 {
+    color: navy;
+    margin-left: 20px;
+}
+h2 {
+    color: navy;
+    margin-left: 20px;
+}
+#navcontainer ul {
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+
+#navcontainer li { 
+    color: navy;
+    padding-left: 20px; 
+}
+#navcontainer a {
+    color:navy;
+}
