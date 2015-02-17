@@ -1,0 +1,17 @@
+{% extends "base.jinja2" %}
+{% block body %}
+  <article class="entry" id="entry={{entry.id}}">
+    {% if request.authenticated_userid %}
+      <h3><a href= "{{ request.route_url('editview', id=entry.id) }}">{{ entry.title }}</a></h3>
+    {% else %}
+      <h3>{{ entry.title }}</h3>
+    {% endif %}
+    <p class="dateline">{{ entry.created.strftime('%b. %d, %Y') }}
+    <div class="entry_body">
+      {{ entry.text|safe }}
+    </div>
+    {% if request.authenticated_userid %}
+      <a href= "{{ request.route_url('editview', id=entry.id) }}"></a>
+    {% endif %}
+  </article>
+{% endblock %}
