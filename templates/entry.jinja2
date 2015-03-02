@@ -1,0 +1,7 @@
+<article class="entry" id="entry{{entry.id}}">
+    <h3><a href= "/detail/{{entry.id}}"><h3>{{ entry.title }}</a></h3>
+    <p class="dateline">{{ entry.created.strftime('%b. %d, %Y') }}
+    <div class="entry_body">
+      {{ entry.text|safe }}
+    </div>
+  </article>
