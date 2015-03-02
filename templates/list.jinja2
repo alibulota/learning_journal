@@ -18,7 +18,7 @@
   </aside>
   {% endif %}
   {% for entry in entries %}
-  <article class="entry" id="entry={{entry.id}}">
+  <article class="entry" id="entry{{entry.id}}">
     <h3><a href= "{{ request.route_url('detail', id=entry.id) }}"><h3>{{ entry.title }}</a></h3>
     <p class="dateline">{{ entry.created.strftime('%b. %d, %Y') }}
     <div class="entry_body">
