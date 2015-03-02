@@ -7,7 +7,7 @@
      {% else %}
        <h3>{{ entry.title }}</h3>
      {% endif %}
-     <p class="dateline">{{ entry.created.strftime('%b. %d, %Y') }}
+     <p class="dateline">{{ entry.convert_strftime() }}
      <div class="entry_body">
        {{ entry.text|safe }}
      </div>
