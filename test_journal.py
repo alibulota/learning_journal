@@ -9,8 +9,7 @@ from journal import INSERT_ENTRY
 import os
 from cryptacular.bcrypt import BCRYPTPasswordManager
 from webtest import AppError
-import unittest
-import markdown
+
 
 TEST_DSN = 'dbname=test_learning_journal user=aabulota'
 INPUT_BTN = '<input type="submit" value="Share" name="Share"/>'
@@ -284,7 +283,8 @@ def test_post_to_edit_view(app, entry, req_context):
 
     item = run_query(req_context.db, READ_ENTRY)
 
-    response = app.post('/editview/{}'.format(item[0][0]), params=entry_data, status='3*')
+    response = app.post('/editview/{}'.format(
+        item[0][0]), params=entry_data, status='3*')
     redirected = response.follow()
     actual = redirected.body
     for expected in entry_data.values():
@@ -303,8 +303,9 @@ def test_post_to_edit_view_unauthorized(app, entry, req_context):
     item = run_query(req_context.db, READ_ENTRY)
 
     with pytest.raises(AppError):
-        app.post('/editview/{}'.format(item[0][0]), params=entry_data, status='3*')
-        
+        app.post('/editview/{}'.format(
+            item[0][0]), params=entry_data, status='3*')
+
 
 def test_do_login_success(auth_req):
     from journal import do_login
@@ -375,24 +376,27 @@ def test_logout(app):
     assert INPUT_BTN not in actual
 
 
-class TestCodeHilite(unittest.TestCase):
+def test_post_with_markdown(app):
+    entry_data = {
+        'title': 'Hello there',
+        'text': '###Header',
+    }
+    username, password = ('admin', 'secret')
+    login_helper(username, password, app)
+    response = app.post('/add', params=entry_data, status='3*')
+    redirected = response.follow()
+    actual = redirected.body
+    assert '<h3>Header</h3>' in actual
 
 
-    def test_exists(self):
-        self.pygexists = True
-        try:
-            import pygments
-        except ImportError:
-            self.pygexists = False
-
-
-    def test_codehilite(self):
-
-        text = '\t# This should look like a comment'
-        md = markdown.Markdown(extentions=['codehilite', 'fenced_code'])
-        self.assertTrue(md.convert(text).startswith('<div class="codehilite"><pre>'))
-        # else:
-        #     self.assertEqual(
-        #         md.convert(text),
-        #         '<pre class="codehilite"><code># This should look like a comment''</code></pre>'
-        #     )
+def test_post_with_codeblock(app):
+    entry_data = {
+        'title': 'Hello there',
+        'text': '```python\nfor i in list:\nx = y**2\nprint(x)\n```',
+    }
+    username, password = ('admin', 'secret')
+    login_helper(username, password, app)
+    response = app.post('/add', params=entry_data, status='3*')
+    redirected = response.follow()
+    actual = redirected.body
+    assert '<div class="codehilite"><pre>' in actual
