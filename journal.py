@@ -24,9 +24,6 @@ from sqlalchemy.orm import (
     )
 from zope.sqlalchemy import ZopeTransactionExtension
 
-
-here = os.path.dirname(os.path.abspath(__file__))
-
 USER = 'aabulota'
 
 here = os.path.dirname(os.path.abspath(__file__))
@@ -130,6 +127,7 @@ def main():
         authorization_policy=ACLAuthorizationPolicy(),
     )
     config.include('pyramid_jinja2')
+    config.include('pyramid_tm')
     config.add_static_view('static', os.path.join(here, 'static'))
     config.add_route('home', '/')
     config.add_route('add', '/add')
